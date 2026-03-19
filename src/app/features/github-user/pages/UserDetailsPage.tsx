@@ -4,71 +4,33 @@ import { PageContainer } from "../../../shared/components/PageContainer/PageCont
 import { PageState } from "../../../shared/components/PageState/PageState";
 import { RepoList } from "../../github-repo/components/RepoList/RepoList";
 import { RepoSortSelect } from "../../github-repo/components/RepoSortSelect/RepoSortSelect";
-import { getGithubUserRepos } from "../../github-repo/services/githubRepoService";
-import type { GithubRepo } from "../../github-repo/types/githubRepo";
+
+import { useGithubUserRepos } from "../../github-repo/hooks/useGithubUserRepos";
 import {
   sortRepositories,
   type RepositorySortOption,
 } from "../../github-repo/utils/sortRepositories";
 import { UserProfileCard } from "../components/UserProfileCard/UserProfileCard";
-import { getGithubUser } from "../services/githubUserService";
-import type { GithubUser } from "../types/githubUser";
+import { useGithubUser } from "../hooks/useGithubUser";
 
 export function UserDetailsPage() {
   const { username } = useParams();
-  const [user, setUser] = useState<GithubUser | null>(null);
-  const [repositories, setRepositories] = useState<GithubRepo[]>([]);
-  const [isLoadingUser, setIsLoadingUser] = useState(true);
-  const [isLoadingRepositories, setIsLoadingRepositories] = useState(true);
-  const [hasUserError, setHasUserError] = useState(false);
-  const [hasRepositoriesError, setHasRepositoriesError] = useState(false);
+  const {
+    user,
+    isLoading: isLoadingUser,
+    hasError: hasUserError,
+  } = useGithubUser(username);
+  const {
+    repositories,
+    isLoading: isLoadingRepositories,
+    hasError: hasRepositoriesError,
+  } = useGithubUserRepos(username);
+
   const [sortOption, setSortOption] =
     useState<RepositorySortOption>("stars_desc");
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [username]);
-
-  useEffect(() => {
-    async function loadUser() {
-      if (!username) return;
-
-      try {
-        setIsLoadingUser(true);
-        setHasUserError(false);
-
-        const userData = await getGithubUser(username);
-        setUser(userData);
-      } catch {
-        setHasUserError(true);
-        setUser(null);
-      } finally {
-        setIsLoadingUser(false);
-      }
-    }
-
-    loadUser();
-  }, [username]);
-
-  useEffect(() => {
-    async function loadRepositories() {
-      if (!username) return;
-
-      try {
-        setIsLoadingRepositories(true);
-        setHasRepositoriesError(false);
-
-        const repositoriesData = await getGithubUserRepos(username);
-        setRepositories(repositoriesData);
-      } catch {
-        setHasRepositoriesError(true);
-        setRepositories([]);
-      } finally {
-        setIsLoadingRepositories(false);
-      }
-    }
-
-    loadRepositories();
   }, [username]);
 
   const sortedRepositories = useMemo(() => {
