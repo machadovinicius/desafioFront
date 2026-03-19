@@ -26,6 +26,10 @@ export function UserDetailsPage() {
     useState<RepositorySortOption>("stars_desc");
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [username]);
+
+  useEffect(() => {
     async function loadUser() {
       if (!username) return;
 
@@ -74,9 +78,11 @@ export function UserDetailsPage() {
   return (
     <PageContainer>
       <div className="mb-4">
+        <p className="text-muted small mb-2">Home / {username}</p>
         <h1 className="h3 mb-1">Detalhes do usuário</h1>
         <p className="text-muted mb-0">
-          Informações públicas do perfil no GitHub.
+          Visualize informações públicas do perfil e a lista de repositórios
+          deste usuário.
         </p>
       </div>
 

@@ -38,6 +38,9 @@ export function RepoDetailsPage() {
     <PageContainer>
       <div className="mb-4 d-flex flex-column flex-md-row justify-content-between align-items-start gap-3">
         <div>
+          <p className="text-muted small mb-2">
+            Repositório / {owner} / {repoName}
+          </p>
           <h1 className="h3 mb-1">Detalhes do repositório</h1>
           <p className="text-muted mb-0">
             Informações públicas do repositório selecionado.

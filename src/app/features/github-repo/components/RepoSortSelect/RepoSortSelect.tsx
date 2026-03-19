@@ -8,14 +8,14 @@ type Props = {
 export function RepoSortSelect({ value, onChange }: Props) {
   return (
     <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
-      <div>
+      <div className="mt-4">
         <h2 className="h4 mb-1">Repositórios</h2>
         <p className="text-muted mb-0">
           Ordene a lista conforme sua preferência.
         </p>
       </div>
 
-      <div>
+      <div className="mt-4">
         <label htmlFor="repository-order" className="form-label mb-1">
           Ordenar por
         </label>
