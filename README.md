@@ -18,6 +18,10 @@ npm install
 
 npm run dev
 
+## 🔗 Demo
+
+https://desafio-front-dusky.vercel.app/
+
 ## 🔍 Funcionalidades
 
 - Buscar usuários do GitHub
