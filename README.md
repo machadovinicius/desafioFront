@@ -20,7 +20,7 @@ npm run dev
 
 ## 🔗 Demo
 
-https://desafio-front-dusky.vercel.app/
+https://desafio-front-lac.vercel.app
 
 ## 🔍 Funcionalidades
 
