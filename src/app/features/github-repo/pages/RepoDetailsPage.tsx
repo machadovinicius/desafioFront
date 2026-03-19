@@ -1,37 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { PageContainer } from "../../../shared/components/PageContainer/PageContainer";
 import { PageState } from "../../../shared/components/PageState/PageState";
 import { RepoDetailsCard } from "../components/RepoDetailsCard/RepoDetailsCard";
-import { getGithubRepoDetails } from "../services/githubRepoService";
-import type { GithubRepoDetails } from "../types/githubRepo";
+import { useGithubRepoDetails } from "../hooks/useGithubRepoDetails";
 
 export function RepoDetailsPage() {
   const { owner, repoName } = useParams();
   const navigate = useNavigate();
-  const [repository, setRepository] = useState<GithubRepoDetails | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasError, setHasError] = useState(false);
+  const { repository, isLoading, hasError } = useGithubRepoDetails(
+    owner,
+    repoName,
+  );
 
   useEffect(() => {
-    async function loadRepositoryDetails() {
-      if (!owner || !repoName) return;
-
-      try {
-        setIsLoading(true);
-        setHasError(false);
-
-        const repositoryData = await getGithubRepoDetails(owner, repoName);
-        setRepository(repositoryData);
-      } catch {
-        setHasError(true);
-        setRepository(null);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    loadRepositoryDetails();
+    window.scrollTo(0, 0);
   }, [owner, repoName]);
 
   return (
