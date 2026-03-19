@@ -3,9 +3,13 @@ import { useParams } from "react-router-dom";
 import { PageContainer } from "../../../shared/components/PageContainer/PageContainer";
 import { PageState } from "../../../shared/components/PageState/PageState";
 import { RepoList } from "../../github-repo/components/RepoList/RepoList";
+import { RepoSortSelect } from "../../github-repo/components/RepoSortSelect/RepoSortSelect";
 import { getGithubUserRepos } from "../../github-repo/services/githubRepoService";
 import type { GithubRepo } from "../../github-repo/types/githubRepo";
-import { sortRepositoriesByStarsDesc } from "../../github-repo/utils/sortRepositories";
+import {
+  sortRepositories,
+  type RepositorySortOption,
+} from "../../github-repo/utils/sortRepositories";
 import { UserProfileCard } from "../components/UserProfileCard/UserProfileCard";
 import { getGithubUser } from "../services/githubUserService";
 import type { GithubUser } from "../types/githubUser";
@@ -18,6 +22,9 @@ export function UserDetailsPage() {
   const [isLoadingRepositories, setIsLoadingRepositories] = useState(true);
   const [hasUserError, setHasUserError] = useState(false);
   const [hasRepositoriesError, setHasRepositoriesError] = useState(false);
+  const [sortOption, setSortOption] =
+    useState<RepositorySortOption>("stars_desc");
+
   useEffect(() => {
     async function loadUser() {
       if (!username) return;
@@ -61,8 +68,8 @@ export function UserDetailsPage() {
   }, [username]);
 
   const sortedRepositories = useMemo(() => {
-    return sortRepositoriesByStarsDesc(repositories);
-  }, [repositories]);
+    return sortRepositories(repositories, sortOption);
+  }, [repositories, sortOption]);
 
   return (
     <PageContainer>
@@ -93,12 +100,7 @@ export function UserDetailsPage() {
 
       {!hasUserError ? (
         <section>
-          <div className="mb-4">
-            <h2 className="h4 mb-1">Repositórios</h2>
-            <p className="text-muted mb-0">
-              Lista ordenada por número de estrelas em ordem decrescente.
-            </p>
-          </div>
+          <RepoSortSelect value={sortOption} onChange={setSortOption} />
 
           {isLoadingRepositories ? (
             <PageState
